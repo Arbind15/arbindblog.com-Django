@@ -1,0 +1,50 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col col-sm-10 col col-lg-6 col col-xl-5 col col-xs-12">
+            <form method="POST", enctype="multipart/form-data" role="form">
+                {% csrf_token %}
+                <div class="card create_post">
+                    <div class="card-header n_post_header">
+                        <table class="post_table">
+                            <tr>
+                                <td rowspan="2" class="post_tb_td">
+                                    <img src="{{post.username.blog.Profile_Picture.url}}" class="pro_pic">
+                                </td>
+                                <td class="post_tb_td pst_lbl" style="margin: 0px;">
+                                    {{post.username}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="post_tb_td pst_lbl text-muted" style="font-size: 10px; margin: 0px;">
+                                    Posted on:  {{post.Date|date:"M d, Y"}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-body n_post_body">
+                        <label for="Title" class="pst_lbl">Title:</label><br>
+                        <input type="text" name="Title" value="{{post.Title}}" id="Title" class="pst_tl" maxlength="100" ><br>
+
+                        <label class="pst_lbl" for="Post">Post:</label>
+                        <br>
+                        <textarea type="text" type="text" name="Post" id="Post" cols="100" rows="100">{{post.Post}}</textarea>
+
+                        <input name="username" style="visibility: hidden;display: none" value="{{post.username_id}}">
+                        <input name="id" style="visibility: hidden;display: none" value="{{post.id}}">
+
+                    </div>
+
+                    <div class="card-footer n_post_footer text-center">
+                        <button type="reset" class="btnn">cancel</button>
+                        <button type="submit" class="btnn" name="update">Update</button>
+                        <button type="submit" class="btnn danger_btn" name="delete">Delete</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

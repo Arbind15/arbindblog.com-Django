@@ -1,0 +1,126 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+  <div class="row justify-content-between no-gutters">
+
+    <div class="col-12 col-md-2 col col-sm-1 col col-lg-3 col col-xl-3 col col-xs-12 ">
+
+        <div class="utility_div">
+
+        </div>
+
+    </div>
+    <div class="col-12 col-md-8 col col-sm-10 col col-lg-5 col col-xl-5 col col-xs-12">
+      <form method="POST" onsubmit="return validate()" enctype="multipart/form-data" role="form">
+      {% csrf_token %}
+      <div class="sign_up_form">
+              <p>
+{#                  <i class="fas fa-user" style="font-size: 80px; color:black; margin-top:20px;"></i>#}
+                  <img class="pro_pic" style="height: 100px;width: 100px;border-radius: 10px;margin-top: 20px" src="{{user.blog.Profile_Picture.url}}">
+                  <label for="upload_img"><i class="fas fa-camera upload_lbl"></i></label>
+                  <input type="file" name="Profile_Picture" id="upload_img" value='{{user.blog.Profile_Picture.url}}' accept="image/*"></input>
+              </p>
+                      <div class="usr_info">
+
+                      {% if messages %}
+                                <div
+                                    {% for message in messages %}
+                                        {% if 'success' in message.tags %}
+                                            class="alert alert-success"
+                                        {% endif %}
+                                        {% if 'error' in message.tags %}
+                                            class="alert alert-danger"
+                                        {% endif %}>
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                        {% endif %}
+
+                        <p>
+                          <label for="username" class="ic_lg"><i class="far fa-user"></i></label>
+                          <input type="text" onkeyup="username_validate()" class="username" id="username" name="username" value="{{user.username}}" required placeholder="Username">
+                            <div class="errorTxt" id="username_error" style="display:none;">Username must contain 5 to 20 character and
+                            can contain underscore, number or hyphen.</div>
+                        </p>
+                        <p>
+                          <label for="email" class="ic_lg"><i class="fas fa-envelope"></i></label>
+
+{#                            to make form valid while updating#}
+
+                            <input class="username" type="email" style="display: none" id="email" name="email"
+                                  required value="{{user.email}}">
+                          <input class="username" disabled data-toggle="tooltip" data-placement="top" title="This filed can not be altered."value="{{user.email}}">
+                        </p>
+                        <p class="paa">
+                          <label class="ic_lg" for="phone"><i class="fas fa-phone"></i></label>
+                          <input class="username" onkeyup="phone_number_validate()" type="tel" id="phone" required name="Phone_Number" value="{{user.blog.Phone_Number}}" placeholder="Phone">
+                            <div class="errorTxt" id="phone_error" style="display:none;">Please enter valid phone number.</div>
+                        </p>
+                        <p class="paa">
+                          <label class="ic_lg" for="Status"><i class="fas fa-comment"></i></label>
+                          <input class="username" maxlength="200" required id="Status" type="text" value="{{user.blog.Status}}" placeholder="Status" name="Status">
+                        </p>
+                      </div>
+{#                      <button class="btnn" type="reset" onclick="cnc()">New Form</button>#}
+                      <button type="submit" class="btnn" onclick="edit()">Update</button>
+      </div>
+      </form>
+    </div>
+    <div class="col-4 col-md-2 col col-sm-1 col col-lg-3 col col-xl-3 col col-xs-12 ">
+        <div class="card actions_card actions_div">
+          <div class="card-header actions_head">
+              Actions
+          </div>
+          <a href="{%url 'create_post'%}" class="card-footer actions_list">
+                  New Post
+          </a>
+          <a href="{%url 'logout'%}" class="card-footer actions_list">
+                  Logout
+          </a>
+        </div>
+    </div>
+  </div>
+</div>
+<script>
+
+function validate() {
+    if(!(username_validate()&phone_number_validate()))
+    {
+        return false;
+    }
+    else
+    {
+        true;
+    }
+}
+
+function phone_number_validate() {
+    var number=document.getElementById('phone').value;
+    var number_regx=/^(\+([0-9]{3}))?[-. ]?([0-9]{2})([0-9]{4})[-. ]?([0-9]{4})$/;
+    if(!(number_regx.test(number)))
+    {
+        document.getElementById('phone_error').style.display='block';
+        return false;
+    }
+    else {
+        document.getElementById('phone_error').style.display='none';
+        return true;
+    }
+}
+
+function username_validate() {
+    var username=document.getElementById('username').value;
+    var user_regx=/^[a-zA-Z0-9_-]{5,20}$/;
+    if(!(user_regx.test(username)))
+    {
+        document.getElementById('username_error').style.display='block';
+        return false;
+    }
+    else {
+        document.getElementById('username_error').style.display='none';
+        return true;
+    }
+}
+</script>
+
+{% endblock %}

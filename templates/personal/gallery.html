@@ -1,0 +1,83 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+
+    <div class="container-fluid gallry_Min_div">
+{#        <div class="row">#}
+            {% for itm in links%}
+                <div style="margin: 5px;">
+                    <img src="{{itm.1}}"   onclick="openModal();currentSlide({{ itm.0 }})" class="hover-shadow">
+                </div>
+            {% endfor %}
+{#        </div>#}
+    </div>
+
+    <div id="myModal" class="modal">
+      <span class="close cursor" onclick="closeModal()">&times;</span>
+      <div class="modal-content">
+          {% for itm in links%}
+          <div class="mySlides">
+              <div class="numbertext">{{ itm.0 }} / {{ links.count }}</div>
+              <img src="{{ itm.1 }}" style="width:100%;height: 100%">
+          </div>
+            {% endfor %}
+
+          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+          <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+          <!-- Caption text -->
+          <div class="caption-container">
+             <p id="caption"></p>
+          </div>
+      </div>
+    </div>
+
+
+<script>
+
+
+// Open the Modal
+function openModal() {
+  document.getElementById("myModal").style.display = "block";
+}
+
+// Close the Modal
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
+}
+
+var slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  var captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  captionText.innerHTML = dots[slideIndex-1].alt;
+}
+
+
+</script>
+
+
+{% endblock %}

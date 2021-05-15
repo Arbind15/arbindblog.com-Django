@@ -1,0 +1,232 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+    <div class="row justify-content-center">
+        <div class="card p-3" style="background-color: transparent;border: 0;">
+            <strong style="color: #26272b";>{{lenght}} result(s) for {{srch_val}}</strong>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        {%for itm in result%}
+
+            {%if "pdf" in itm.0%}
+                <div class="col-12 col-md-6 col-sm-10 col-lg-6 col-xl-6">
+                <div class="card download_card">
+                    <div class="card-header">
+                      <div class="container-fluid">
+                        <div class="row justify-content-between">
+                          <div>
+                            <div class="card-title" style="margin: 0px;font-weight: 500">{{itm.2}} (PDF)</div>
+                            <div class="card-title text-muted" style="font-size: 10px; margin: 0px">Date od upload: {{itm.4}}</div>
+                            <div class="card-title text-muted" style="font-size: 10px; margin: 0px;">Size: {{itm.3}}Mb MB</div>
+                          </div>
+                          <div class="align-self-center">
+                            <a class="btnn" href="{{itm.1}}" type="button" target="_blank" style="font-size: 10px;padding: 5px;height: 18px;">View</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                </div>
+            {%endif%}
+
+            {%if "code" in itm.0%}
+                <div class="col-12 col-md-6 col-sm-10 col-lg-6 col-xl-6">
+                    <div class="card create_post posts">
+                    <div class="card-header n_post_header">
+                        <div class="card-text" style="margin: 0px;font-weight: 500;font-size: 25px">
+                            {{itm.1}} (Code Snippets):
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    <div class="card p-3 code_body" id="{{ itm.1 }}">
+<pre>
+{% for detail in itm.2%}<p style="margin-top: 0px;margin-bottom: 0px;color: #d73c02;">{{ detail }}</p>{% endfor %}
+</pre>
+
+                    </div>
+
+                    </div>
+                    <div class="card-footer n_post_footer text-right">
+                        <button class="btnn" id="{{ itm.1 }}+1" onmouseleave="Chng_ttl('{{ itm.1 }}+1')"  onclick="CopyCode('{{ itm.1 }}')" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard"> Copy </button>
+                    </div>
+                </div>
+            </div>
+            {%endif%}
+
+            {%if "images" in itm.0%}
+                <div class="col-12 col-md-6 col-sm-10 col-lg-6 col-xl-6">
+                     <div class="card create_post posts">
+                        <img class="card-img-top" src="{{itm.2}}">
+
+                        <div class="card-footer n_post_header">
+                            <div class="card-text" style="margin: 0px;font-weight: 500;font-size: 25px">
+                                <a class="sr_img" href="/media/images/{{itm.1}}" style="color: #26272b;font-size: 15px"  target="_blank">{{itm.1}} (Image):</a>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            {%endif%}
+
+            {%if "apps" in itm.0%}
+                <div class="col-12 col-md-6 col-sm-10 col-lg-6 col-xl-6">
+                    <form method="POST" enctype="multipart/form-data" action="{%url 'downloads'%}" >
+                    {% csrf_token %}
+                    <div class="card download_card">
+                        <div class="card-header">
+                          <div class="container-fluid">
+                            <div class="row justify-content-between">
+                              <div>
+                                <div class="card-title" style="margin: 0px;font-weight: 500">{{itm.2}} (Apps)</div>
+                                <div class="card-title text-muted" style="font-size: 10px; margin: 0px">Date od upload: {{itm.6}}</div>
+                                <div class="card-title text-muted" style="font-size: 10px; margin: 0px;">Size: {{itm.5}} MB</div>
+                              </div>
+                              <div class="align-self-center">
+                                <button class="btnn" id="{{itm.2}}" type="button" style="font-size: 10px;padding: 5px;height: 18px;" onclick="detail('{{itm.2}}','{{itm.3}}')">Hide Detail</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body"  id="{{itm.3}}">
+                          <div class="card-text" style="font-size: 13px">
+                              {% for detail in itm.4%}
+                                       {{detail}}
+                                       <br>
+                                   {% endfor %}
+                          </div>
+                        </div>
+                        <div class="card-footer text-right">
+                          <button class="btnn" type="submit" style="font-size: 10px;padding: 5px; height: 18px" name="file_dir" value="{{itm.1}}">Download</button>
+                        </div>
+                    </div>
+                    </form>
+
+                </div>
+            {%endif%}
+
+            {%if "multimedia" in itm.0%}
+                <div class="col-12 col-md-6 col-sm-10 col-lg-6 col-xl-6">
+                    <div class="card download_card">
+                        <div class="card-header">
+                            <div class="card-text">
+                                <a href="#" class="sr_img" style="color: #26272b; font-size: 15px;
+                                 font-weight: 500">{{itm.1}} (Multimedia):</a><br>
+                                <blockquote class="blockquote mb-0 card-body">
+                                    More options are coming soon!
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {%endif%}
+
+            {%if "user" in itm.0%}
+                <div class="col-12 col-md-6 col-sm-10 col-lg-6 col-xl-6">
+                    <div class="card download_card">
+                        <div class="card-header n_post_header">
+                            <table class="post_table">
+                                <tr>
+                                    <td rowspan="2" class="post_tb_td">
+                                        <img src="{{itm.1.blog.Profile_Picture.url}}" class="pro_pic">
+                                    </td>
+                                    <td class="post_tb_td pst_lbl" style="margin: 0px;">
+                                        {{itm.1}} (User):
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="post_tb_td pst_lbl text-muted" style="font-size: 10px; margin: 0px;">
+                                        {{itm.1.blog.Status}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="card-footer justify-content-left">
+                            {% if user.is_authenticated %}
+                                <a href="{%url 'post'%}" class="btnn" style="font-size: 10px;padding: 5px;height: 18px;">View Detail</a>
+                            {%else%}
+                                <a href="{%url 'blog' %}" class="btnn" style="font-size: 10px;padding: 5px;height: 18px;">Login to view Detail</a>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+            {%endif%}
+
+            {%if "post" in itm.0%}
+                <div class="col-12 col-md-6 col-sm-10 col-lg-6 col-xl-6">
+                    <div class="card create_post posts">
+                        <div class="card-header n_post_header">
+                            <div class="container-fluid">
+                                <div class="row justify-content-between">
+                                    <div class="col-12 col-md-9 col-sm-9 col-lg-9 col-xl-9 col-xs-9" >
+                                        <form method="POST", enctype="multipart/form-data" role="form" action="{%url 'post'%}">
+                                        {% csrf_token %}
+                                        <table class="post_table">
+                                            <tr>
+                                                <td rowspan="3" class="post_tb_td">
+                                                    <button name="s_usr" type="submit" class="pro_pic" value="{{itm.1.username_id}}" style="background-color: transparent;
+                                                    border: none;height: 40px;width: 40px">
+                                                    <img src="{{itm.1.username.blog.Profile_Picture.url}}" style="height: 40px;width: 40px;" class="pro_pic">
+                                                    </button>
+                                                </td>
+                                                <td class="post_tb_td pst_lbl">
+                                                    <button  type="submit" value="{{itm.1.username_id}}" name="s_usr"  class="name" style="
+                                                   text-decoration: none;font-size: 15px;
+                                                   background-color: transparent;
+                                                   margin: 0px;
+                                                   border: none;
+                                                   font-weight: 500;
+                                                   color: #26272b">{{itm.1.username}}:</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="post_tb_td pst_lbl text-muted" style="font-size: 10px;margin: 0px">
+                                                        &nbsp&nbspStatus: {{itm.1.username.blog.Status}}
+                                                </td>
+                                            </tr>
+                                                 <td class="post_tb_td pst_lbl text-muted" style="font-size: 10px;margin: 0px">
+                                                        &nbsp&nbspPosted on:  {{itm.1.Date|date:"M d, Y"}}
+                                                </td>
+                                            <tr>
+
+                                            </tr>
+                                        </table>
+                                        </form>
+                                    </div>
+                                    <form method="POST", enctype="multipart/form-data" role="form" action="{%url 'post'%}">
+                                    {% csrf_token %}
+                                    <div class="col-3 col-md-3 col-sm-3 col-lg-3 col-xl-3 col-xs-3">
+                                        {% if  itm.1.username_id == user.id %}
+                                        <button type="submit" value="{{itm.1.id}}" name="edt_btn" style="font-size: 15px;padding: 5px;height: 25px;width: 60px;" class="btnn">Edit</button>
+                                        {% endif %}
+                                    </div>
+                                    <input name="username" style="visibility: hidden;display: none" value="{{itm.1.username_id}}">
+                                    <input name="id" style="visibility: hidden;display: none" value="{{itm.1.id}}">
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="card-body n_post_body">
+                            <h7 style="font-size: 17px;font-weight: 400;margin-left: 10px" class="card-title">{{itm.1.Title}}</h7>
+                            <div class="card p-3" style="background-color: #eae6e6; margin: 0px;">
+                                <p style="font-size: 14px;">
+                                     {{itm.1.Post}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card-footer n_post_footer text-right">
+                            {% if user.is_authenticated %}
+                            <a href="{%url 'post'%}" class="btnn"  style="font-size: 10px;padding: 3px; height:20px;width:40px;">View Posts</a>
+                            {%else%}
+                            <a href="{%url 'blog' %}" class="btnn"  style="font-size: 10px;padding: 3px; height:20px;width:40px;">Login to View Posts</a>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+            {%endif%}
+
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

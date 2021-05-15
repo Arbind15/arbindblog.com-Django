@@ -1,0 +1,64 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+    <div class="card-columns">
+        {% for itm in data%}
+        <form method="POST" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <div class="card download_card">
+            <div class="card-header">
+              <div class="container-fluid">
+                <div class="row justify-content-between">
+                  <div>
+                    <div class="card-title" style="margin: 0px;font-weight: 500">{{itm.0}}</div>
+                    <div class="card-title text-muted" style="font-size: 10px; margin: 0px">Date od upload: {{itm.5}}</div>
+                    <div class="card-title text-muted" style="font-size: 10px; margin: 0px;">Size: {{itm.4}} MB</div>
+                  </div>
+                  <div class="align-self-center">
+                    <button class="btnn" id="{{itm.0}}" type="button" style="font-size: 10px;padding: 5px;height: 18px;" onclick="detail('{{itm.0}}','{{itm.1}}')">Hide Detail</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-body"  id="{{itm.1}}">
+              <div class="card-text" style="font-size: 13px">
+                  {% for detail in itm.3%}
+                        {{detail}}
+                        <br>
+                        {% endfor %}
+              </div>
+            </div>
+            <div class="card-footer text-right">
+              <button class="btnn" type="submit" style="font-size: 10px;padding: 5px; height: 18px" name="file_dir" value="{{itm.2}}">Download</button>
+            </div>
+        </div>
+        </form>
+        {% endfor %}
+    </div>
+
+</div>
+
+<script>
+function detail(itm0,itm1) {
+    // alert(itm1);
+    var detl=document.getElementById(itm0).innerText;
+    if(detl=="Show Detail")
+    {
+        document.getElementById(itm0).innerText="Hide Detail";
+        document.getElementById(itm1).style.display="block";
+        itm1='#'+itm1;
+        $(itm1).fadeIn();
+        // document.getElementById(itm1).style.height='200';
+        // alert(itm1);
+    }
+    if(detl=="Hide Detail")
+    {
+        document.getElementById(itm0).innerText="Show Detail";
+        document.getElementById(itm1).style.display="none";
+        itm1='#'+itm1;
+        $(itm1).fadeOut();
+    }
+}
+</script>
+
+{% endblock %}

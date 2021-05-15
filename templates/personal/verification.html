@@ -1,0 +1,17 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+    <div class="row justify-content-center align-items-center">
+        <div class="col col-md-7 col col-sm-10 col col-lg-6 col col-xl-6 col col-xs-12">
+            <div class="alert alert-success" role="alert" style="margin-top: 20px">
+                <strong>Account activation link has been sent to your email, Please click the link to activate your account.</strong>
+                <br><br>
+                <a href="{% url 'home' %}"style="color: #26272b;margin-left: auto;" class="sr_img">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

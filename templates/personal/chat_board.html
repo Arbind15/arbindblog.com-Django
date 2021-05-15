@@ -1,0 +1,18 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="chat_nav">
+<a href="{%url 'profile'%}" style="margin-right: 15%"> <img class="actpic" src="/media/admin/me.png"></a>
+
+        <ul class="navul" style="margin-top: -20px">
+<!--                <li><a href="{%url 'blog'%}">Login</a></li>-->
+               <li><a href="{%url 'post'%}">Posts</a></li>
+                <li><a href="{%url 'profile'%}">Profile</a></li>
+
+        </ul>
+    </div>
+{% block blog %}
+{% endblock %}
+
+
+
+{% endblock %}

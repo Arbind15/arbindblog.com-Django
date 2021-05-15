@@ -1,0 +1,134 @@
+{%  extends 'personal/base.html'%}
+{% load socialaccount %}
+{% providers_media_js %}
+{% block content%}
+<div class="container-fluid hh">
+    <div class="row justify-content-center">
+        <div class="col col-md-7 col col-sm-10 col col-lg-6 col col-xl-6 col col-xs-12">
+            <div class="sign_up_form">
+                <i class="fas fa-user" style="font-size: 80px; color:black; margin-top:20px;"></i>
+                <form method="POST", id="signup_form" onsubmit="return validate()"  enctype="multipart/form-data" role="form">
+                    {% csrf_token %}
+                        <div class="usr_info">
+{#                             <div class="errorTxt">#}
+{#                             </div>#}
+
+                            {% if messages %}
+                                    <div class="alert alert-danger">
+                                        {% for message in messages %}
+                                            {{ message }}
+                                        {% endfor %}
+                                    </div>
+                            {% endif %}
+                          <p>
+                            <label for="username" class="ic_lg"><i class="far fa-user"></i></label>
+                            <input class="username"  name="username" onkeyup="username_validate()" id="username" placeholder="Username" required>
+                            <div class="errorTxt" id="username_error" style="display:none;">Username must contain 5 to 20 character and
+                            can contain underscore, number or hyphen.</div>
+                          </p>
+                          <p>
+                            <label for="email" class="ic_lg"><i class="fas fa-envelope"></i></label>
+                            <input class="email" name="email" onkeyup="email_validate()" id="email" placeholder="Email" required>
+                              <div class="errorTxt" id="email_error" style="display:none;">Enter valid email.</div>
+                          </p>
+                          <p class="paa">
+                            <label class="ic_lg" for="password1"><i class="fas fa-lock"></i></label>
+                            <input class="password"required onkeyup="password1_validate()"  placeholder="Password"  type="password" name="password1" id="password1">
+                              <div class="errorTxt" id="password1_error" style="display:none;">Password must contain 8 to 20 characters, at least one numeric digit and a special character.</div>
+                          </p>
+                          <p>
+                            <label class="ic_lg" for="password2"><i class="fas fa-lock"></i></label>
+                            <input class="password" required onkeyup="password2_validate()" placeholder="Re-type Password"  type="password" name="password2" id="password2" >
+                              <div class="errorTxt" id="password2_error" style="display:none;">Two password must be same.</div>
+                          </p>
+                        </div>
+                    <button type="reset" class="btnn" >Cancel</button>
+                    <button type="submit" class="btnn" onclick="validate()">Signup</button>
+                    <hr>
+                </form>
+                    <label style="margin-top: -5px;" class="lgn_lbl">Login with:</label><br>
+                    <a href="{% provider_login_url "google" %}" class="gbtn"><i class="fa fa-google"></i>oogle</a><br><br>
+                    <a href="{% provider_login_url "facebook" method="oauth2" %}" class="fbtn"><i class="fa fa-facebook"></i>acebook</a><br>
+                    <hr style="margin-top: 30px;">
+                      <div class="row justify-content-md-left">
+                        <div class="col-12 col-sm-7 col-md-7 col-lg-7.5 col-xl-7.5">
+                          <a href="{%url 'blog'%}" style="font-size: 13px;">Already have an account? Login </a>
+                        </div>
+                      </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function validate() {
+    {#alert(username_validate()&email_validate()&password1_validate()&password2_validate())#}
+    if(!(username_validate()&email_validate()&password1_validate()&password2_validate()))
+    {
+        return false;
+    }
+    else
+    {
+        true;
+    }
+}
+
+
+function username_validate() {
+    var username=document.getElementById('username').value;
+    var user_regx=/^[a-zA-Z0-9_-]{5,20}$/;
+    if(!(user_regx.test(username)))
+    {
+        document.getElementById('username_error').style.display='block';
+        return false;
+    }
+    else {
+        document.getElementById('username_error').style.display='none';
+        return true;
+    }
+}
+
+function email_validate() {
+    var email=document.getElementById('email').value;
+    var email_regx=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    if(!(email_regx.test(email)))
+    {
+        document.getElementById('email_error').style.display='block';
+        return false;
+    }
+    else {
+        document.getElementById('email_error').style.display='none';
+        return true;
+    }
+}
+function password1_validate() {
+    var password1=document.getElementById('password1').value;
+    var password1_regx=/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/;
+    if(!(password1_regx.test(password1)))
+    {
+        document.getElementById('password1_error').style.display='block';
+        return false;
+    }
+    else {
+        document.getElementById('password1_error').style.display='none';
+        return true;
+    }
+}
+function password2_validate() {
+     var password2=document.getElementById('password2').value;
+     var password1=document.getElementById('password1').value;
+    if(!(password1==password2))
+    {
+        document.getElementById('password2_error').style.display='block';
+        return false;
+    }
+    else {
+        document.getElementById('password2_error').style.display='none';
+        return true;
+    }
+}
+</script>
+
+{% endblock %}

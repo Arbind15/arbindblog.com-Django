@@ -1,0 +1,82 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+    <div class="row justify-content-between no-gutters">
+        <div class="col-12 col-md-1 col col-sm-1 col col-lg-2 col col-xl-2 col col-xs-12 ">
+            <div class="utility_div">
+            </div>
+        </div>
+        <div class="col-12 col-md-10 col col-sm-10 col col-lg-8 col col-xl-8 col col-xs-12">
+            <div class="card-columns post_columns" style="column-count: 1;">
+
+                {%for itm in data%}
+
+                    <div class="card create_post posts">
+                    <div class="card-header n_post_header">
+                        <div class="card-text" style="margin: 0px;font-weight: 500;font-size: 25px">
+                            {{itm.0}}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    <div class="card p-3 code_body" id="{{ itm.0 }}">
+<pre>
+{% for itm1 in itm.1%}<p style="margin-top: 0px;margin-bottom: 0px;color: #d73c02;">{{ itm1 }}</p>{% endfor %}
+</pre>
+
+                    </div>
+
+                    </div>
+                    <div class="card-footer n_post_footer text-right">
+                        <button class="btnn" id="{{ itm.0 }}+1" onmouseleave="Chng_ttl('{{ itm.0 }}+1')"  onclick="CopyCode('{{ itm.0 }}')" data-toggle="tooltip" data-placement="top" title="Copy to Clipboard"> Copy </button>
+                    </div>
+                </div>
+                    {%endfor%}
+            </div>
+        </div>
+        <div class="col-4 col-md-1 col col-sm-1 col col-lg-2 col col-xl-2 col col-xs-12 ">
+{#            {% if user.is_authenticated %}#}
+{#            <div class="card actions_card actions_div_post actions_div">#}
+{#                <div class="card-header actions_head">#}
+{#                    Actions#}
+{#                </div>#}
+{#                <a href="{%url 'create_post'%}" class="card-footer actions_list">#}
+{#                        New Post#}
+{#                </a>#}
+{#                <a href="{%url 'logout'%}" class="card-footer actions_list">#}
+{#                        Logout#}
+{#                </a>#}
+{#            </div>#}
+{#            {%endif%}#}
+        </div>
+    </div>
+</div>
+
+<script>
+
+function CopyCode(Code) {
+
+    window.getSelection().removeAllRanges();
+    if (document.selection) {
+    var range = document.body.createTextRange();
+    range.moveToElementText(document.getElementById(Code));
+    range.select().createTextRange();
+    document.execCommand("copy");
+  } else if (window.getSelection) {
+    var range = document.createRange();
+    range.selectNode(document.getElementById(Code));
+    window.getSelection().addRange(range);
+    document.execCommand("copy");
+    // alert("Text has been copied, now paste in the text-area")
+  }
+    window.getSelection().removeAllRanges();
+    document.getElementById(Code+"+1").title="Code copied to Clipboard!";
+}
+
+function Chng_ttl(x) {
+    document.getElementById(x).title="Copy to Clipboard";
+    // alert(x);
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col col-sm-7 col col-lg-4 col col-xl-4 col col-xs-12">
+            <form method="POST", enctype="multipart/form-data" role="form">
+                {% csrf_token %}
+                <div class="card create_post">
+                    <div class="card-header n_post_header">
+                        <table class="post_table">
+                            <tr>
+                                <td rowspan="2" class="post_tb_td">
+                                    <img src="{{user.blog.Profile_Picture.url}}" class="pro_pic">
+                                </td>
+                                <td class="post_tb_td pst_lbl" style="margin: 0px;">
+                                    {{user.username}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="post_tb_td pst_lbl text-muted" style="font-size: 10px; margin: 0px;">
+                                    Date:  {{Date|date:"M d, Y"}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="card-body n_post_body">
+                        <label for="Title" class="pst_lbl">Title:</label><br>
+                        <input type="text" required name="Title" style="font-size: 13px;" id="title" class="pst_tl" maxlength="100" ><br>
+
+                        <label class="pst_lbl" for="Post">Post:</label>
+                        <br>
+                        <textarea type="text" style="font-size: 13px;" required name="Post" id="post" cols="100" rows="100"></textarea>
+                        <input type="text" name="username" value="{{user.id}}" style="visibility: hidden;display: none">
+                    </div>
+                    <div class="card-footer n_post_footer text-center">
+                        <button type="reset" class="btnn">cancel</button>
+                        <button type="submit" class="btnn">Post</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

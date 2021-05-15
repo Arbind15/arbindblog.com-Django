@@ -1,0 +1,21 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+    <div style="display: flex;flex-wrap: wrap; align-items: stretch;
+        justify-content: space-between;
+        flex-direction: row;">
+        {%for itm in links%}
+        <div class="card download_card">
+            <div class="card-header">
+                <div class="card-title" style="margin: 0px;font-weight: 500">{{itm.1}}</div>
+                <div class="card-title text-muted" style="font-size: 10px; margin: 0px">Date od upload: {{itm.3}}</div>
+                <div class="card-title text-muted" style="font-size: 10px; margin: 0px;">Size: {{itm.2}} MB</div>
+            </div>
+            <div class="card-footer text-right">
+              <a class="btnn" target="_blank" href="{{itm.0}}" type="button" style="font-size: 10px;padding: 5px; height: 18px" name="file_dir" value="{{itm.2}}">View</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

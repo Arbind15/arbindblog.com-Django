@@ -1,0 +1,153 @@
+{%  extends 'personal/base.html'%}
+{% block content%}
+<div class="container-fluid hh">
+
+    <div class="row justify-content-between no-gutters">
+
+        <div class="col-12 col-md-2 col col-sm-1 col col-lg-3 col col-xl-3 col col-xs-12 ">
+
+            <div class="utility_div">
+
+            </div>
+
+        </div>
+        <div class="col-12 col-md-8 col col-sm-10 col col-lg-5 col col-xl-5 col col-xs-12">
+            <div class="card-columns post_columns" style="column-count: 1;">
+
+                {%for post in posts%}
+
+                    <div class="card create_post posts">
+                    <div class="card-header n_post_header">
+                    <form method="POST", enctype="multipart/form-data" role="form">
+                    {% csrf_token %}
+                        <div class="container-fluid">
+                            <div class="row justify-content-between">
+                                <div class="col-12 col-md-9 col-sm-9 col-lg-9 col-xl-9 col-xs-9" >
+                                    <table class="post_table">
+                                        <tr>
+                                            <td rowspan="2" class="post_tb_td">
+                                                <button name="s_usr" type="submit" class="pro_pic" value="{{post.username_id}}" style="background-color: transparent;
+                                                border: none;">
+                                                <img src="{{post.username.blog.Profile_Picture.url}}" class="pro_pic">
+                                                </button>
+                                            </td>
+                                            <td class="post_tb_td pst_lbl">
+                                                <button  type="submit" value="{{post.username_id}}" name="s_usr"  class="name" style="
+                                               text-decoration: none;font-size: 15px;
+                                               background-color: transparent;
+                                               margin: 0px;
+                                               border: none;
+                                               font-weight: 500;
+                                               color: #26272b">{{post.username}}</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="post_tb_td pst_lbl text-muted" style="font-size: 10px;margin: 0px">
+                                                    &nbsp&nbspPosted on:  {{post.Date|date:"M d, Y"}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-3 col-md-3 col-sm-3 col-lg-3 col-xl-3 col-xs-3">
+                                    {% if  post.username_id == user.id %}
+                                    <button type="submit" value="{{post.id}}" name="edt_btn" style="font-size: 15px;padding: 5px;height: 25px;width: 60px;" class="btnn">Edit</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    </div>
+                    <div class="card-body n_post_body">
+                        <h7 style="font-size: 17px;font-weight: 400;margin-left: 10px" class="card-title">{{post.Title}}</h7>
+                        <div class="card p-3" style="background-color: #eae6e6; margin: 0px;">
+{#                            <pre style="font-size: 14px; margin-left: 20px">#}
+{#                                {{post.Post}}#}
+{#                            </pre>#}
+                            <p style="font-size: 14px;">
+                                 {{post.Post}}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card-footer n_post_footer text-left">
+
+                        <label for="comment" class="pst_lbl">Comments:</label><br>
+                        {%for cmt in comments%}
+                        {%if cmt.Post == post %}
+                            <form method="POST", enctype="multipart/form-data" role="form">
+                            {% csrf_token %}
+                                <div>
+                                    <table class="post_table" style="margin-left: -15px">
+                                        <tr>
+                                            <td rowspan="2" class="post_tb_td">
+                                            <button name="s_usr" type="submit" class="pro_pic" value="{{cmt.username_id}}" style="background-color: transparent;
+                                            border: none;
+                                            height: 30px; width: 30px; border-radius:15px;">
+                                            <img src="{{cmt.username.blog.Profile_Picture.url}}" style="height: 30px; width: 30px; border-radius:15px;" class="pro_pic">
+                                            </button>
+                                            </td>
+                                            <td class="post_tb_td pst_lbl">
+                                                <button  type="submit" value="{{cmt.username_id}}" name="s_usr" style="
+                                                       text-decoration: none;font-size: 12px;
+                                                       background-color: transparent;
+                                                       border: none;
+                                                       font-weight: 500;
+                                                       margin: 0px;
+                                                       color: #26272b">{{cmt.username}}</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="post_tb_td pst_lbl text-muted" style="font-size: 8px; margin: 0px">
+                                                &nbsp&nbsp&nbsp{{cmt.Date}}
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div   style="background-color: #eae6e6; margin: 0px;width: 30%; border-radius: 5px;margin-left: 7px;">
+                                        <p style="font-size: 12px; margin: 8px">
+                                             {{cmt.Comment}}
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </form>
+                        {%endif%}
+                        {%endfor%}
+
+
+
+                        <div class="">
+                            <form method="POST", enctype="multipart/form-data" role="form">
+                                {% csrf_token %}
+                                <textarea type="text"  cols="5" required id="comments" placeholder="Write a comment" name="Comment" rows="5" style="height: 45px;font-size: 10px;"></textarea><br>
+                                <button class="btnn" type="reset" style="font-size: 10px;padding: 3px; height:20px;width:40px;">Cancel</button>
+                                <button class="btnn" type="submit" style="font-size: 10px;padding: 3px; height:20px;width:40px;">Post</button>
+                                <input type="text" name="username" value="{{user.id}}" style="visibility: hidden;display: none">
+                                <input type="text" name="Post" value="{{post.id}}" style="visibility: hidden;display: none">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                    {%endfor%}
+
+            </div>
+
+        </div>
+        <div class="col-4 col-md-2 col col-sm-1 col col-lg-3 col col-xl-3 col col-xs-12 ">
+            <div class="card actions_card actions_div_post actions_div">
+                <div class="card-header actions_head">
+                    Actions
+                </div>
+                <a href="{%url 'create_post'%}" class="card-footer actions_list">
+                        New Post
+                </a>
+                <a href="{%url 'logout'%}" class="card-footer actions_list">
+                        Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
